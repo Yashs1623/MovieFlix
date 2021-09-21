@@ -66,7 +66,7 @@ function LoginPage({ navigation }) {
             <View style={styles.container2}>
                 <View >
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('Profile', {text: email})} >
+                        onPress={() => navigation.navigate('MyTabs', {text: email})} >
                         <Ionicons
                             name='arrow-forward-outline'
                             size={40}

@@ -3,8 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginPage from './screens/LoginPage'
 import SignupPage from './screens/SignupPage'
-import Profile from './screens/Profile'
-
+import tabs from './screens/tab_navigator_screens/tabs'
 
 const Stack = createStackNavigator();
 function App() {
@@ -16,7 +15,7 @@ function App() {
         </Stack.Screen>
         <Stack.Screen name='Signup' component={SignupPage} options={{headerShown: false}}>
         </Stack.Screen>
-        <Stack.Screen name='Profile' component={Profile} options={{headerShown: false}}>
+        <Stack.Screen name='MyTabs' component={tabs} options={{headerShown: false}}>
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

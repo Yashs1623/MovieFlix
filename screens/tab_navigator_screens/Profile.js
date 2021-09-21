@@ -16,11 +16,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ImagePicker from 'react-native-image-crop-picker';
 import * as Animatable from 'react-native-animatable';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { ScrollView } from 'react-native-gesture-handler';
-
 
 function Profile({ route, navigation }) {
-
 
     const [image, setimage] = useState('https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png');
     const [fullName, setfullName] = useState('');
@@ -179,7 +176,7 @@ function Profile({ route, navigation }) {
                         </TouchableOpacity>
                         <Text style={{ fontFamily: 'SansitaSwashed-Regular', fontSize: 18, color: 'white', marginTop: 12, marginLeft: 10 }}>Upload your photo</Text>
                     </View>
-                    <View style={{ marginTop: 30, flex: 1.8, justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <View style={{ marginTop: 60, flex: 1.8, justifyContent: 'flex-start', alignItems: 'center' }}>
                         <TextInput
                             style={validfullname==true ? styles.trueinput: styles.input }
                             placeholder='Your fullname'
@@ -201,7 +198,7 @@ function Profile({ route, navigation }) {
                         }
                         <View style={{...styles.trueinput, justifyContent:'center'}}>
                             <Text>
-                               Email :  {route.params.text}
+                               Email :  {route.params.text1}
                             </Text>
                             </View>
 
@@ -250,7 +247,7 @@ function Profile({ route, navigation }) {
                                 </Animatable.View>
                             )
                         }
-                         <TouchableOpacity style={{ marginTop: 40 }}
+                         <TouchableOpacity style={(validfullname==true && validphoneNumber==true)? {marginTop:40}: {marginTop:8}}
                         onPress={() => {
                             phoneNumberValidator();
                             fullNameValidator();
