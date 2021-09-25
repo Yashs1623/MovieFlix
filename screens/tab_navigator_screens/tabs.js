@@ -2,7 +2,6 @@ import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Profile from './Profile';
-// import UpcomingMovies from './upcoming_movies_top_nav_screen/UpcomingMovies';
 import Search from './Search'
 import Favourites from './Favourites'
 import TopTabs from './upcoming_movies_top_nav_screen/top_tab_navigator';
