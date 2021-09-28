@@ -20,9 +20,9 @@ function MyTabs({ route }) {
             <Tab.Screen name="TopTabs" component={TopTabs}
 
                 options={{
-                    tabBarLabel: 'Upcoming',
+                    tabBarLabel: 'Movies',
                     tabBarIcon: () => (
-                        <MaterialCommunityIcons name="calendar-search" color="white" size={26} />
+                        <MaterialCommunityIcons name="movie-open" color="white" size={26} />
                     ),
                 }} />
             <Tab.Screen name="Search" component={Search}

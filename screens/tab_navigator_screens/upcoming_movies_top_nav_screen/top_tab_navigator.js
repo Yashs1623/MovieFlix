@@ -1,6 +1,6 @@
 import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import LatestMovies from './LatestMovies'
+import PopularMovies from './PopularMovies'
 import UpcomingMovies from './UpcomingMovies'
 import TrendingMovies from './TrendingMovies'
 const Tab = createMaterialTopTabNavigator();
@@ -10,7 +10,7 @@ function TopTabs() {
     <Tab.Navigator>
       <Tab.Screen name="Upcoming" component={UpcomingMovies} />
       <Tab.Screen name="Trending"  component={TrendingMovies} />
-      <Tab.Screen name="Latest" component={LatestMovies} />
+      <Tab.Screen name="Popular" component={PopularMovies} />
     </Tab.Navigator>
   );
 }

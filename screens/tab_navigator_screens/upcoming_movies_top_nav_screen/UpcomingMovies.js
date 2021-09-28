@@ -4,18 +4,17 @@ import {
     StyleSheet,
     Text,
     FlatList,
-    ScrollView,
     ImageBackground,
-} from 'react-native'
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as api_related from '../../../constants/api_related';
-
 function UpcomingMovies() {
     useEffect(async () => {
         await getUpcoming_hindiMovies();
         await getUpcoming_englishMovies();
         await getUpcoming_teluguMovies();
+
     }, []);
 
     const [hindimoviedata, sethindimovieData] = useState([]);
@@ -59,77 +58,40 @@ function UpcomingMovies() {
         } finally {
             settelugumoviesLoading(false);
         }
-    }
+    };
+    let combinedarray = [...hindimoviedata, ...englishmoviedata, ...telugumoviedata];
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }) => {
 
+        return (
+            <View style={styles.card}>
+                <ImageBackground
+                    source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
+                    style={item.title.length > 13 ? styles.imagebackground2 : styles.imagebackground1}
+                    imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
+                </ImageBackground>
+                <Text style={item.title.length > 13 ? styles.cardtitle2 : styles.cardtitle} >
+                    {item.title}
+                </Text>
+            </View>
+        );
+    };
 
-        <View style={styles.card}>
-            <ImageBackground
-                source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
-                style={item.title.length > 13 ? styles.imagebackground2 : styles.imagebackground1}
-                imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
-            </ImageBackground>
-            <Text style={item.title.length > 13 ? styles.cardtitle2 : styles.cardtitle} >
-                {item.title}
-            </Text>
-
-        </View>
-    );
-
-    const getHeader = (genre) => (
-        <Text style={styles.textStyle}>
-            {genre}
-        </Text>
-    );
 
     return (
         <View style={styles.container}>
             <LinearGradient colors={['#26867c', '#33b3a6', '#88DCE6']}
                 style={styles.lineargradient}
                 end={{ x: 0, y: 0.7 }}>
-
-                <ScrollView>
-                    <View>
-
-                        <FlatList
-                            // scrollEnabled={false}
-                            style={{ flexWrap: 'wrap' }}
-                            data={hindimoviedata}
-                            renderItem={renderItem}
-                            numColumns={3}
-                            horizontal={false}
-                            ListHeaderComponent={getHeader("Bollywood")}
-                        >
-                        </FlatList>
-                    </View>
-                    <View>
-
-                        <FlatList
-                            //  scrollEnabled={false}
-                            style={{ flexWrap: 'wrap' }}
-                            data={englishmoviedata}
-                            renderItem={renderItem}
-                            numColumns={3}
-                            horizontal={false}
-                            ListHeaderComponent={getHeader("Hollywood")}
-                        >
-                        </FlatList>
-                    </View>
-                   
-
-                        <FlatList
-                            // scrollEnabled={false}
-                            style={{ flexWrap: 'wrap' }}
-                            data={telugumoviedata}
-                            renderItem={renderItem}
-                            numColumns={3}
-                            horizontal={false}
-                            ListHeaderComponent={getHeader("Tollywood")}
-                        >
-                        </FlatList>
-                   
-                </ScrollView>
+                <View >
+                    <FlatList
+                        data={combinedarray}
+                        renderItem={renderItem}
+                        numColumns={3}
+                        horizontal={false}
+                    >
+                    </FlatList>
+                </View>
             </LinearGradient>
         </View>
     )
@@ -143,13 +105,6 @@ const styles = StyleSheet.create({
     },
     lineargradient: {
         flex: 1,
-    },
-    textStyle: {
-        fontFamily: 'SansitaSwashed-Regular',
-        color: 'white',
-        fontSize: 27,
-        marginLeft: wp('3%'),
-        marginTop: hp('1%'),
     },
     card: {
         borderRadius: 12,
@@ -183,7 +138,6 @@ const styles = StyleSheet.create({
         height: hp('19%'),
         width: wp('30%')
     },
-
 
 });
 
