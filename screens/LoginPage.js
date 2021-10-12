@@ -11,7 +11,6 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import * as Animatable from 'react-native-animatable';
 
 
 function LoginPage({ navigation }) {

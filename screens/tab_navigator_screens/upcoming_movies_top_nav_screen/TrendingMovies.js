@@ -5,12 +5,13 @@ import {
     Text,
     FlatList,
     ImageBackground,
+    TouchableOpacity
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as api_related from '../../../constants/api_related';
 
-function TrendingMovies() {
+function TrendingMovies({ navigation }) {
     useEffect(async () => {
         await getTopTrending_Movies();
         await getTrending_Movies_page2();
@@ -57,25 +58,41 @@ function TrendingMovies() {
             settrendingmoviesLoading3(false);
         }
     };
-    let combinedArray= [...trendingmovies2, ...trendingmovies3]
+    let combinedArray = [...trendingmovies2, ...trendingmovies3]
 
     const renderItem = ({ item, index }) => {
         if (index + 1 <= 10) {
             return (
                 <View style={styles.top_trending_card}>
-                    <ImageBackground
-                        source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
-                        style={item.title.length > 13 ? styles.top_trending_imagebackground2 : styles.top_trending_imagebackground1}
-                        imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
-                    </ImageBackground>
-                    <Text style={item.title.length > 13 ? styles.top_trending_cardtitle2 : styles.top_trending_cardtitle} >
-                        {item.title}
-                    </Text>
+                    <TouchableOpacity  //navigation.navigate('movie_details')
+                        onPress={() => {
+                            item.original_language == 'en' ? navigation.navigate('hollywood_movie_details',
+                                {
+                                    movie_title: item.title,
+                                    movie_id: item.id,
+                                    release_date: item.release_date,
+                                    poster_path: item.poster_path,
+                                    movie_description: item.overview,
+                                    vote_average: item.vote_average,
+                                }) : navigation.navigate('bollywood_and_tollywood_movie_details',
+                                    {
+                                        movie_title: item.title,
+                                    })
+                        }}>
+                        <ImageBackground
+                            source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
+                            style={item.title.length > 13 ? styles.top_trending_imagebackground2 : styles.top_trending_imagebackground1}
+                            imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
+                        </ImageBackground>
+                        <Text style={item.title.length > 13 ? styles.top_trending_cardtitle2 : styles.top_trending_cardtitle} >
+                            {item.title}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             );
         }
         else {
-            null;
+            return null;
         }
     };
 
@@ -83,14 +100,30 @@ function TrendingMovies() {
 
         return (
             <View style={styles.trendingmovie_card}>
-                <ImageBackground
-                    source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
-                    style={item.title.length > 15 ? styles.trendingmovie_imagebackground2 : styles.trendingmovie_imagebackground1}
-                    imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
-                </ImageBackground>
-                <Text style={item.title.length > 15 ? styles.trendingmovie_cardtitle2 : styles.trendingmovie_cardtitle} >
-                    {item.title}
-                </Text>
+                <TouchableOpacity  //navigation.navigate('movie_details')
+                    onPress={() => {
+                        item.original_language == 'en' ? navigation.navigate('hollywood_movie_details',
+                            {
+                                movie_title: item.title,
+                                movie_id: item.id,
+                                release_date: item.release_date,
+                                poster_path: item.poster_path,
+                                movie_description: item.overview,
+                                vote_average: item.vote_average,
+                            }) : navigation.navigate('bollywood_and_tollywood_movie_details',
+                                {
+                                    movie_title: item.title,
+                                })
+                    }}>
+                    <ImageBackground
+                        source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
+                        style={item.title.length > 15 ? styles.trendingmovie_imagebackground2 : styles.trendingmovie_imagebackground1}
+                        imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
+                    </ImageBackground>
+                    <Text style={item.title.length > 15 ? styles.trendingmovie_cardtitle2 : styles.trendingmovie_cardtitle} >
+                        {item.title}
+                    </Text>
+                </TouchableOpacity>
             </View>
         );
     };
@@ -115,14 +148,14 @@ function TrendingMovies() {
                         horizontal={true}>
                     </FlatList>
                 </View>
-                
-                    <FlatList
-                        data={combinedArray}
-                        renderItem={renderItem2}
-                        numColumns={3}
-                        horizontal={false}
-                        ListHeaderComponent={getHeader("Other  Trending  Movies")}>
-                    </FlatList>
+
+                <FlatList
+                    data={combinedArray}
+                    renderItem={renderItem2}
+                    numColumns={3}
+                    horizontal={false}
+                    ListHeaderComponent={getHeader("Other  Trending  Movies")}>
+                </FlatList>
 
 
             </LinearGradient>
@@ -154,7 +187,7 @@ const styles = StyleSheet.create({
         width: wp('42%'),
         marginLeft: wp('2.2%'),
         marginTop: 15,
-        marginBottom:10
+        marginBottom: 10
     },
     top_trending_cardtitle: {
         color: '#26867c',

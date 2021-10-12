@@ -20,6 +20,8 @@ target 'MovieFlix' do
 
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
+  pod 'YouTubeSdk', :path => '../node_modules/react-native-youtube-sdk'
+
   target 'MovieFlixTests' do
     inherit! :complete
     # Pods for testing

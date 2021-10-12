@@ -148,106 +148,106 @@ function Profile({ route, navigation }) {
     return (
 
         <View style={styles.container} >
-                <StatusBar backgroundColor='#26867c' />
-                <LinearGradient colors={['#26867c', '#33b3a6', '#88DCE6']}
-                    style={styles.lineargradient}
-                    end={{ x: 0, y: 0.7 }}>
-                    <View style={{ marginLeft: 10 }}>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Login')}>
-                            <Ionicons
-                                name='arrow-back-outline'
-                                size={42}
-                                color='white'>
-                            </Ionicons>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.textStyle}>
-                            Set   your   profile
+            <StatusBar backgroundColor='#26867c' />
+            <LinearGradient colors={['#26867c', '#33b3a6', '#88DCE6']}
+                style={styles.lineargradient}
+                end={{ x: 0, y: 0.7 }}>
+                <View style={{ marginLeft: 10 }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Login')}>
+                        <Ionicons
+                            name='arrow-back-outline'
+                            size={42}
+                            color='white'>
+                        </Ionicons>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.textStyle}>
+                        Set   your   profile
+                    </Text>
+                </View>
+                <View style={{ marginTop: 15, flex: 0.6, justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+                        <ImageBackground style={styles.imagebackground}
+                            source={{ uri: image }}
+                            imageStyle={{ borderRadius: 70 }}>
+                        </ImageBackground>
+                    </TouchableOpacity>
+                    <Text style={{ fontFamily: 'SansitaSwashed-Regular', fontSize: 18, color: 'white', marginTop: 12, marginLeft: 10 }}>Upload your photo</Text>
+                </View>
+                <View style={{ marginTop: 60, flex: 1.8, justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <TextInput
+                        style={validfullname == true ? styles.trueinput : styles.input}
+                        placeholder='Your fullname'
+                        keyboardType='name-phone-pad'
+                        onEndEditing={() => fullNameValidator()}
+                        autoCompleteType='name'
+                        placeholderTextColor='black'
+                        value={fullName}
+                        onChangeText={(text) => setfullName(text)}>
+                    </TextInput>
+                    {
+                        validfullname ? null :
+                            <Animatable.View animation="fadeInLeft" duration={1000}>
+                                <Text style={{ fontSize: 16, color: 'red', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 20, fontFamily: 'SansitaSwashed-Regular' }}>
+                                    {fullNameError}
+                                </Text>
+                            </Animatable.View>
+
+                    }
+                    <View style={{ ...styles.trueinput, justifyContent: 'center' }}>
+                        <Text>
+                            Email :  {route.params.text1}
                         </Text>
                     </View>
-                    <View style={{ marginTop: 15, flex: 0.6, justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-                            <ImageBackground style={styles.imagebackground}
-                                source={{ uri: image }}
-                                imageStyle={{ borderRadius: 70 }}>
-                            </ImageBackground>
-                        </TouchableOpacity>
-                        <Text style={{ fontFamily: 'SansitaSwashed-Regular', fontSize: 18, color: 'white', marginTop: 12, marginLeft: 10 }}>Upload your photo</Text>
-                    </View>
-                    <View style={{ marginTop: 60, flex: 1.8, justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <TextInput
-                            style={validfullname==true ? styles.trueinput: styles.input }
-                            placeholder='Your fullname'
-                            keyboardType='name-phone-pad'
-                            onEndEditing={() => fullNameValidator()}
-                            autoCompleteType='name'
-                            placeholderTextColor='black'
-                            value={fullName}
-                            onChangeText={(text) => setfullName(text)}>
-                        </TextInput>
-                        {
-                            validfullname ? null :
-                                <Animatable.View animation="fadeInLeft" duration={1000}>
-                                    <Text style={{ fontSize: 16, color: 'red', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 20, fontFamily: 'SansitaSwashed-Regular' }}>
-                                        {fullNameError}
-                                    </Text>
-                                </Animatable.View>
 
-                        }
-                        <View style={{...styles.trueinput, justifyContent:'center'}}>
-                            <Text>
-                               Email :  {route.params.text1}
-                            </Text>
-                            </View>
+                    <TextInput
+                        style={validphoneNumber == true ? styles.trueinput : styles.input}
+                        placeholder='Mobile no.'
+                        keyboardType='number-pad'
+                        onEndEditing={() => phoneNumberValidator()}
+                        placeholderTextColor='black'
+                        value={phoneNumber}
+                        onChangeText={(text) => setphoneNumber(text)}
+                    />
+                    {
+                        validphoneNumber ? null :
+                            <Animatable.View animation="fadeInLeft" duration={1000}>
+                                <Text style={{ fontSize: 16, color: 'red', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 20, fontFamily: 'SansitaSwashed-Regular' }}>
+                                    {phoneNumberError}
+                                </Text>
+                            </Animatable.View>
 
-                        <TextInput
-                            style={validphoneNumber==true ? styles.trueinput: styles.input }
-                            placeholder='Mobile no.'
-                            keyboardType='number-pad'
-                            onEndEditing={() => phoneNumberValidator()}
-                            placeholderTextColor='black'
-                            value={phoneNumber}
-                            onChangeText={(text) => setphoneNumber(text)}
-                        />
-                        {
-                            validphoneNumber ? null :
-                                <Animatable.View animation="fadeInLeft" duration={1000}>
-                                    <Text style={{ fontSize: 16, color: 'red', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 20, fontFamily: 'SansitaSwashed-Regular' }}>
-                                        {phoneNumberError}
-                                    </Text>
-                                </Animatable.View>
-
-                        }
-                        <TouchableOpacity style={{ ...styles.input, justifyContent: 'center', marginBottom: 5 }}
-                            onPress={showDatePicker}>
-                            <Text>
-                                {"Birthdate : " + birthdate}
-                            </Text>
-                        </TouchableOpacity>
-                        {
-                            isDatePickerVisible && (
-                                <DateTimePickerModal
-                                    isVisible={isDatePickerVisible}
-                                    mode="date"
-                                    onConfirm={handleConfirm}
-                                    onCancel={hideDatePicker}
-                                />
-                            )
-                        }
-                        {
-                            agecheck && (
-                                <Animatable.View animation="bounceIn" duration={2000}>
-                                    <Text style={{ fontSize: 25, color: 'white', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 15, fontFamily: 'SansitaSwashed-Regular' }}>
-                                        {
-                                            "Age : " + age
-                                        }
-                                    </Text>
-                                </Animatable.View>
-                            )
-                        }
-                         <TouchableOpacity style={(validfullname==true && validphoneNumber==true)? {marginTop:40}: {marginTop:8}}
+                    }
+                    <TouchableOpacity style={{ ...styles.input, justifyContent: 'center', marginBottom: 5 }}
+                        onPress={showDatePicker}>
+                        <Text>
+                            {"Birthdate : " + birthdate}
+                        </Text>
+                    </TouchableOpacity>
+                    {
+                        isDatePickerVisible && (
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="date"
+                                onConfirm={handleConfirm}
+                                onCancel={hideDatePicker}
+                            />
+                        )
+                    }
+                    {
+                        agecheck && (
+                            <Animatable.View animation="bounceIn" duration={2000}>
+                                <Text style={{ fontSize: 25, color: 'white', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 15, fontFamily: 'SansitaSwashed-Regular' }}>
+                                    {
+                                        "Age : " + age
+                                    }
+                                </Text>
+                            </Animatable.View>
+                        )
+                    }
+                    <TouchableOpacity style={(validfullname == true && validphoneNumber == true) ? { marginTop: 40 } : { marginTop: 8 }}
                         onPress={() => {
                             phoneNumberValidator();
                             fullNameValidator();
@@ -258,18 +258,18 @@ function Profile({ route, navigation }) {
                             Save
                         </Text>
                     </TouchableOpacity>
-                    </View>
-                   
-                    <BottomSheet
-                        ref={bs}
-                        snapPoints={[330, 0]}
-                        initialSnap={1}
-                        callbackNode={fall}
-                        enabledGestureInteraction={true}
-                        renderContent={renderInner}
-                        renderHeader={renderHeader}>
-                    </BottomSheet>
-                </LinearGradient>
+                </View>
+
+                <BottomSheet
+                    ref={bs}
+                    snapPoints={[330, 0]}
+                    initialSnap={1}
+                    callbackNode={fall}
+                    enabledGestureInteraction={true}
+                    renderContent={renderInner}
+                    renderHeader={renderHeader}>
+                </BottomSheet>
+            </LinearGradient>
         </View>
     );
 }
@@ -277,7 +277,7 @@ function Profile({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         backgroundColor: '#88DCE6',
     },
     lineargradient: {
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderRadius: 25,
     },
-    trueinput:{
+    trueinput: {
         color: 'black',
         backgroundColor: 'paleturquoise',
         height: hp('5.5%'),

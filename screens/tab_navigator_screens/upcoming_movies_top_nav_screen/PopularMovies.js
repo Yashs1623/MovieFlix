@@ -6,13 +6,14 @@ import {
     FlatList,
     ImageBackground,
     ScrollView,
+    TouchableOpacity
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as api_related from '../../../constants/api_related';
 
 
-function PopularMovies() {
+function PopularMovies({navigation}) {
     useEffect(async () => {
         await getPopular_hindiMovies();
         await getPopular_englishMovies();
@@ -66,16 +67,32 @@ function PopularMovies() {
     const renderItem = ({ item, index }) => {
         if (index + 1 <= 15) {
             return (
-                <View style={styles.popular_card}>
-                    <ImageBackground
-                        source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
-                        style={item.title.length > 17 ? styles.popular_imagebackground2 : styles.popular_imagebackground1}
-                        imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
-                    </ImageBackground>
-                    <Text style={item.title.length > 17 ? styles.popular_cardtitle2 : styles.popular_cardtitle} >
-                        {item.title}
-                    </Text>
-                </View>
+                <TouchableOpacity  //navigation.navigate('movie_details')
+                    onPress={() => {
+                        item.original_language == 'en' ? navigation.navigate('hollywood_movie_details',
+                            {
+                                movie_title: item.title,
+                                movie_id: item.id,
+                                release_date: item.release_date,
+                                poster_path: item.poster_path,
+                                movie_description: item.overview,
+                                vote_average: item.vote_average,
+                            }) : navigation.navigate('bollywood_and_tollywood_movie_details',
+                                {
+                                    movie_title: item.title,
+                                })
+                    }}>
+                    <View style={styles.popular_card}>
+                        <ImageBackground
+                            source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
+                            style={item.title.length > 17 ? styles.popular_imagebackground2 : styles.popular_imagebackground1}
+                            imageStyle={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
+                        </ImageBackground>
+                        <Text style={item.title.length > 17 ? styles.popular_cardtitle2 : styles.popular_cardtitle} >
+                            {item.title}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             );
         }
         else {
