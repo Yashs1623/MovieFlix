@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
     View,
     StyleSheet,
@@ -16,6 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ImagePicker from 'react-native-image-crop-picker';
 import * as Animatable from 'react-native-animatable';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { AuthContext } from './../Authentication';
 
 function Profile({ route, navigation }) {
 
@@ -32,6 +33,8 @@ function Profile({ route, navigation }) {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [agecheck, setagecheck] = useState(false);
     const [age, setage] = useState('');
+
+    const { user, logout } = useContext(AuthContext)
 
 
     const showDatePicker = () => {
@@ -152,17 +155,14 @@ function Profile({ route, navigation }) {
             <LinearGradient colors={['#26867c', '#33b3a6', '#88DCE6']}
                 style={styles.lineargradient}
                 end={{ x: 0, y: 0.7 }}>
-                <View style={{ marginLeft: 10 }}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('Login')}>
-                        <Ionicons
-                            name='arrow-back-outline'
-                            size={42}
-                            color='white'>
-                        </Ionicons>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity
+                    style={{alignItems:'flex-end'}}
+                    onPress={() => logout()}>
+                    <Text style={{ fontSize: 22, marginTop:7,marginRight: 20, fontFamily: 'SansitaSwashed-Regular', color:'white' }}>
+                        Sign Out
+                    </Text>
+                </TouchableOpacity>
+                <View style={{ marginTop:10, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={styles.textStyle}>
                         Set   your   profile
                     </Text>
@@ -198,7 +198,7 @@ function Profile({ route, navigation }) {
                     }
                     <View style={{ ...styles.trueinput, justifyContent: 'center' }}>
                         <Text>
-                            Email :  {route.params.text1}
+                            Email :
                         </Text>
                     </View>
 

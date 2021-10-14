@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import {
     View,
     TextInput,
@@ -11,11 +11,14 @@ import {
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { AuthContext } from './Authentication';
 
 
 function LoginPage({ navigation }) {
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
+
+    const{login}= useContext(AuthContext)
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#26867c' />
@@ -65,7 +68,7 @@ function LoginPage({ navigation }) {
             <View style={styles.container2}>
                 <View >
                     <TouchableOpacity style={styles.button}
-                        onPress={() => navigation.navigate('MyTabs', {text: email})} >
+                        onPress={() => login(email,password)} >
                         <Ionicons
                             name='arrow-forward-outline'
                             size={40}

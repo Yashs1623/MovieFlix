@@ -10,7 +10,7 @@ import TopTabs from './upcoming_movies_top_nav_screen/top_tab_navigator';
 const Tab = createMaterialBottomTabNavigator();
 
 function MyTabs({ route }) {
-    const temp = route.params.text
+    // const temp = route.params.text
     return (
         <Tab.Navigator
             initialRouteName='TopTabs'
@@ -40,7 +40,7 @@ function MyTabs({ route }) {
                     ),
 
                 }} />
-            <Tab.Screen name="Profile" component={Profile} initialParams={{ text1: temp }}
+            <Tab.Screen name="Profile" component={Profile} //initialParams={{ text1: temp }}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: () => (

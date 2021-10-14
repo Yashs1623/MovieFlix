@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     View,
     TextInput,
@@ -12,6 +12,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as Animatable from 'react-native-animatable';
+import { AuthContext } from './Authentication';
 
 function SignupPage({ navigation }) {
     const [email, setemail] = useState('');
@@ -27,6 +28,7 @@ function SignupPage({ navigation }) {
     const [final_passwordcheck, setfinalpasswordcheck] = useState(false);
     const [final_emailcheck, setfinalemailcheck] = useState(false);
 
+    const { register } = useContext(AuthContext)
 
     function emailValidator() {
         let email_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
@@ -177,7 +179,7 @@ function SignupPage({ navigation }) {
                     {
                         validpassword ? null :
                             <Animatable.View animation="fadeInLeft" duration={1000}>
-                                <Text style={{ fontSize: 16, color: 'red', justifyContent: 'flex-start', alignItems: 'center',  fontFamily: 'SansitaSwashed-Regular' }}>
+                                <Text style={{ fontSize: 16, color: 'red', justifyContent: 'flex-start', alignItems: 'center', fontFamily: 'SansitaSwashed-Regular' }}>
                                     {passwordError}
                                 </Text>
                             </Animatable.View>
@@ -189,7 +191,10 @@ function SignupPage({ navigation }) {
                             passwordValidator();
                             fullNameValidator();
                             (final_namecheck === true && final_emailcheck === true && final_passwordcheck === true) ?
-                                navigation.navigate('Profile', { text: email }) : null
+                                // (
+                                    // navigation.navigate('Profile', { text: email }),
+                                    register(email, password) : null
+                                // ) 
                         }}>
                         <Text style={{ ...styles.textStyle, fontSize: 30 }}>
                             Sign up
