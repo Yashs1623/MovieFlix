@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
 
 
-function Search({navigation}) {
+function Search({ navigation }) {
     const [movie_search_name, setMovie_search_name] = useState('');
     const [movie_search, setMovie_search] = useState([]);
     const [ismovie_searchLoading, setmovie_searchLoading] = useState(true);
@@ -35,7 +35,7 @@ function Search({navigation}) {
     const renderItem = ({ item }) => {
         return (
             <View style={styles.card}>
-                <TouchableOpacity 
+                <TouchableOpacity
                     onPress={() => {
                         item.original_language == 'en' ? navigation.navigate('hollywood_movie_details',
                             {
@@ -86,12 +86,22 @@ function Search({navigation}) {
                         }}>
                     </TextInput>
                 </View>
-                <FlatList
-                    data={movie_search}
-                    renderItem={renderItem}
-                    numColumns={3}
-                    horizontal={false}>
-                </FlatList>
+                <View style={{justifyContent:'center', alignItems:'center'}}>
+                {
+                    (movie_search_name == '') ? <Ionicons
+                        name='search'
+                        size= {hp('25%')}
+                        color='paleturquoise'
+                        style={{ marginLeft: 10, marginTop: hp('25%'), marginRight: 10 }}>
+                    </Ionicons> : <FlatList
+                        data={movie_search}
+                        renderItem={renderItem}
+                        numColumns={3}
+                        horizontal={false}>
+                    </FlatList>
+                }
+                </View>
+
             </LinearGradient>
         </View>
     );
@@ -125,7 +135,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'paleturquoise',
         marginLeft: 15,
         fontSize: 20,
-        width:wp('70%')
+        width: wp('70%')
     },
     card: {
         borderRadius: 12,

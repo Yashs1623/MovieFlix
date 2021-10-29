@@ -10,9 +10,8 @@ import {
 } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
-import Animated, { set } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import ImagePicker from 'react-native-image-crop-picker';
 import * as Animatable from 'react-native-animatable';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -198,7 +197,7 @@ function Profile({ route, navigation }) {
                     }
                     <View style={{ ...styles.trueinput, justifyContent: 'center' }}>
                         <Text>
-                            Email :
+                            Email :   {route.params.text}
                         </Text>
                     </View>
 
@@ -247,7 +246,7 @@ function Profile({ route, navigation }) {
                             </Animatable.View>
                         )
                     }
-                    <TouchableOpacity style={(validfullname == true && validphoneNumber == true) ? { marginTop: 40 } : { marginTop: 8 }}
+                    <TouchableOpacity style={(validfullname == true && validphoneNumber == true) ? { marginTop: 20 } : { marginTop: 0 }}
                         onPress={() => {
                             phoneNumberValidator();
                             fullNameValidator();

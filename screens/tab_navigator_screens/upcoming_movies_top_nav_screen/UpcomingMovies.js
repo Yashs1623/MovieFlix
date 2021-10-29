@@ -5,12 +5,15 @@ import {
     Text,
     FlatList,
     ImageBackground,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as api_related from '../../../constants/api_related';
-function UpcomingMovies({navigation}) {
+
+
+function UpcomingMovies({ navigation }) {
+
     useEffect(async () => {
         await getUpcoming_hindiMovies();
         await getUpcoming_englishMovies();
@@ -24,7 +27,7 @@ function UpcomingMovies({navigation}) {
     const [isenglishmoviesLoading, setenglishmoviesLoading] = useState(true);
     const [telugumoviedata, settelugumovieData] = useState([]);
     const [istelugumoviesLoading, settelugumoviesLoading] = useState(true);
-    
+
 
     const getUpcoming_hindiMovies = async () => {
         try {
@@ -64,25 +67,22 @@ function UpcomingMovies({navigation}) {
     let combinedarray = [...hindimoviedata, ...englishmoviedata, ...telugumoviedata];
 
     const renderItem = ({ item }) => {
-        
+
 
         return (
             <View style={styles.card}>
                 <TouchableOpacity  //navigation.navigate('movie_details')
-                onPress={()=> {
-                    item.original_language=='en'? navigation.navigate('hollywood_movie_details',
-                    {
-                        movie_title: item.title, 
-                        movie_id: item.id,
-                        release_date : item.release_date,
-                        poster_path: item.poster_path,
-                        movie_description: item.overview,
-                        vote_average: item.vote_average,
-                    }): navigation.navigate('bollywood_and_tollywood_movie_details',
-                    {
-                        movie_title: item.title, 
-                    })
-                }}>
+                    onPress={() => {
+                        navigation.navigate('hollywood_movie_details',
+                            {
+                                movie_title: item.title,
+                                movie_id: item.id,
+                                release_date: item.release_date,
+                                poster_path: item.poster_path,
+                                movie_description: item.overview,
+                                vote_average: item.vote_average,
+                            })
+                    }}>
                     <ImageBackground
                         source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.poster_path }}
                         style={item.title.length > 13 ? styles.imagebackground2 : styles.imagebackground1}
@@ -140,14 +140,13 @@ const styles = StyleSheet.create({
         color: '#26867c',
         fontSize: 18,
         marginTop: 0,
-        marginLeft: 1
-
+        marginLeft: 5,
     },
     cardtitle2: {
         color: '#26867c',
         fontSize: 15,
         marginTop: 0,
-        marginLeft: 0
+        marginLeft: 0,
     },
     imagebackground1: {
         height: hp('21%'),

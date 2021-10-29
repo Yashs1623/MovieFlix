@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "993058356408-dncnma5b2do34gu65mp1jssg11rndgda.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.movieflix",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "993058356408-jqk7jesu12a3ft2uih3e6in65q0n44k8.apps.googleusercontent.com",
           "client_type": 3
         }

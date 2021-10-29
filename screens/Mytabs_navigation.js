@@ -7,16 +7,19 @@ import hollywood_movie_details from './tab_navigator_screens/upcoming_movies_top
 import bollywood_and_tollywood_movie_details from './tab_navigator_screens/upcoming_movies_top_nav_screen/bollywood_and_tollywood_movie_details';
 import similar_movie_details from './tab_navigator_screens/upcoming_movies_top_nav_screen/similar_movie_details';
 import { createStackNavigator } from '@react-navigation/stack';
+import { AuthContext } from './Authentication';
+import * as user_info from './auth_route'
 
 const Stack = createStackNavigator();
 
-function MyTabs_navigation() {
 
+function MyTabs_navigation({user_info}) {
+    const email= user_info.email
 
     return (
         <NavigationContainer independent={true}>
             <Stack.Navigator initialRouteName= "MyTabs">
-                <Stack.Screen name='MyTabs' component={MyTabs} options={{ headerShown: false }}>
+                <Stack.Screen name='MyTabs' component={MyTabs} options={{ headerShown: false }} initialParams = {{text : email}}>
                 </Stack.Screen>
                 <Stack.Screen name='Login' component={LoginPage} options={{ headerShown: false }}>
                 </Stack.Screen>

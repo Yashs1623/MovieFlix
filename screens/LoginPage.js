@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import {
     View,
     TextInput,
@@ -6,7 +6,8 @@ import {
     StatusBar,
     ImageBackground,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ToastAndroid
 } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,8 +18,20 @@ import { AuthContext } from './Authentication';
 function LoginPage({ navigation }) {
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
+    const [isSecureEntry, setisSecureEntry] = useState(true);
 
-    const{login}= useContext(AuthContext)
+    const showToastWithGravityAndOffset = () => {
+        ToastAndroid.showWithGravityAndOffset(
+            "Authenticating...",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            25,
+            hp('38%')
+        );
+        return null;
+    };
+
+    const { login, googleLogin , facebookLogin} = useContext(AuthContext)
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor='#26867c' />
@@ -37,30 +50,60 @@ function LoginPage({ navigation }) {
                     </ImageBackground>
                 </View>
                 <View style={styles.inputcontainer}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Email'
-                        keyboardType='email-address'
-                        autoCompleteType='email'
-                        placeholderTextColor='black'
-                        value={email}
-                        onChangeText={(text) => setemail(text)}
-                        autoCapitalize='none'>
-                    </TextInput>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='Password'
-                        autoCompleteType='password'
-                        placeholderTextColor='black'
-                        secureTextEntry={true}
-                        value={password}
-                        onChangeText={(text) => setpassword(text)}
-                    />
+                    <View style={{ flexDirection: 'row' }}>
+                        <Ionicons
+                            name='mail'
+                            size={30}
+                            color='paleturquoise'
+                            style={{ marginLeft: 10, marginTop: 10, marginRight: 10 }}>
+                        </Ionicons>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Email'
+                            keyboardType='email-address'
+                            autoCompleteType='email'
+                            placeholderTextColor='black'
+                            value={email}
+                            onChangeText={(text) => setemail(text)}
+                            autoCapitalize='none'>
+                        </TextInput>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setisSecureEntry((prev) => !prev);
+                            }}>
+                            {
+                                isSecureEntry ? <Ionicons
+                                    name='eye-off'
+                                    size={30}
+                                    color='paleturquoise'
+                                    style={{ marginLeft: 10, marginTop: 10, marginRight: 10 }}>
+                                </Ionicons> : <Ionicons
+                                    name='eye'
+                                    size={30}
+                                    color='paleturquoise'
+                                    style={{ marginLeft: 10, marginTop: 10, marginRight: 10 }}>
+                                </Ionicons>
+                            }
+                        </TouchableOpacity>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='Password'
+                            autoCompleteType='password'
+                            placeholderTextColor='black'
+                            secureTextEntry={isSecureEntry}
+                            value={password}
+                            onChangeText={(text) => setpassword(text)}
+                        />
+                    </View>
                 </View>
                 <View style={styles.textContainer}>
-                    <Text style={{...styles.textStyle2, fontSize:19, marginTop:0}}>
-                        Forgot password ?
+                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                        <Text style={{ ...styles.textStyle2, fontSize: 19, marginTop: 0 }}>
+                            Forgot password ?
                         </Text>
+                    </TouchableOpacity>
                     <Text style={styles.textStyle2}>Sign in</Text>
                 </View>
 
@@ -68,7 +111,8 @@ function LoginPage({ navigation }) {
             <View style={styles.container2}>
                 <View >
                     <TouchableOpacity style={styles.button}
-                        onPress={() => login(email,password)} >
+                        onPress={() => {login(email, password), 
+                        showToastWithGravityAndOffset();}} >
                         <Ionicons
                             name='arrow-forward-outline'
                             size={40}
@@ -90,12 +134,12 @@ function LoginPage({ navigation }) {
                 </View>
 
                 <View style={{ flex: 3, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontFamily: 'SansitaSwashed-Regular', fontSize: 18, color: '#33b3a6',marginTop:10 }}>
+                    <Text style={{ fontFamily: 'SansitaSwashed-Regular', fontSize: 18, color: '#33b3a6', marginTop: 10 }}>
                         Or login with:
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={{ ...styles.button2, justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>facebookLogin()}>
                                 <Ionicons
                                     name='logo-facebook'
                                     size={25}
@@ -104,7 +148,7 @@ function LoginPage({ navigation }) {
                             </TouchableOpacity>
                         </View>
                         <View style={{ ...styles.button2, justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={()=>googleLogin()} >
                                 <Ionicons
                                     name='logo-google'
                                     size={25}
@@ -112,17 +156,7 @@ function LoginPage({ navigation }) {
                                 </Ionicons>
                             </TouchableOpacity>
                         </View>
-                        <View style={{ ...styles.button2, justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity >
-                                <Ionicons
-                                    name='logo-instagram'
-                                    size={25}
-                                    color='white'>
-                                </Ionicons>
-                            </TouchableOpacity>
-                        </View>
                     </View>
-
                 </View>
             </View>
         </View>
@@ -152,7 +186,7 @@ const styles = StyleSheet.create({
         fontFamily: 'SansitaSwashed-Regular',
         color: 'white',
         fontSize: 28,
-        marginTop:30
+        marginTop: 30
 
     },
     imagebackground: {
@@ -172,25 +206,28 @@ const styles = StyleSheet.create({
         flex: 2.8,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
     },
     textContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-       
+
     },
 
     input: {
+        fontSize: 16,
         color: 'black',
         backgroundColor: 'paleturquoise',
-        height: hp('5.5%'),
+        height: 48,
         width: wp('75%'),
         paddingLeft: 10,
         marginBottom: 25,
         borderWidth: 0.5,
         borderColor: 'white',
         borderRadius: 25,
-        elevation: 6
+        elevation: 1,
+        marginRight: 15,
+        borderColor: 'black'
     },
     button: {
         alignItems: 'center',
@@ -215,7 +252,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#33b3a6',
         borderRadius: 30,
         aspectRatio: 1,
-        margin:15
+        margin: 15
     }
 
 })

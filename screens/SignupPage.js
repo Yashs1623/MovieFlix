@@ -6,7 +6,8 @@ import {
     StatusBar,
     ImageBackground,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ToastAndroid
 } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
@@ -27,8 +28,20 @@ function SignupPage({ navigation }) {
     const [final_namecheck, setfinalnamecheck] = useState(false);
     const [final_passwordcheck, setfinalpasswordcheck] = useState(false);
     const [final_emailcheck, setfinalemailcheck] = useState(false);
+    const [isSecureEntry, setisSecureEntry] = useState(true);
 
     const { register } = useContext(AuthContext)
+
+    const showToastWithGravityAndOffset = () => {
+        ToastAndroid.showWithGravityAndOffset(
+            "Authenticating...",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            25,
+            hp('15%')
+        );
+        return null;
+    };
 
     function emailValidator() {
         let email_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
@@ -103,7 +116,7 @@ function SignupPage({ navigation }) {
                 end={{ x: 0, y: 0.7 }}>
                 <View>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Login')}>
+                        onPress={() => navigation.pop()}>
                         <Ionicons
                             name='arrow-back-outline'
                             size={42}
@@ -127,16 +140,24 @@ function SignupPage({ navigation }) {
                     </Text>
                 </View>
                 <View style={{ flex: 2.6, marginTop: 25, justifyContent: 'flex-start', alignItems: 'center' }}>
-                    <TextInput
-                        style={validfullname == true ? styles.trueinput : styles.input}
-                        placeholder='Your fullname'
-                        keyboardType='name-phone-pad'
-                        onEndEditing={() => fullNameValidator()}
-                        autoCompleteType='name'
-                        placeholderTextColor='black'
-                        value={fullName}
-                        onChangeText={(text) => setfullName(text)}>
-                    </TextInput>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Ionicons
+                            name='person'
+                            size={30}
+                            color='paleturquoise'
+                            style={{ marginTop: 10, marginRight: 10 }}>
+                        </Ionicons>
+                        <TextInput
+                            style={validfullname == true ? styles.trueinput : styles.input}
+                            placeholder='Your fullname'
+                            keyboardType='name-phone-pad'
+                            onEndEditing={() => fullNameValidator()}
+                            autoCompleteType='name'
+                            placeholderTextColor='black'
+                            value={fullName}
+                            onChangeText={(text) => setfullName(text)}>
+                        </TextInput>
+                    </View>
                     {
                         validfullname ? null :
                             <Animatable.View animation="fadeInLeft" duration={1000}>
@@ -146,17 +167,25 @@ function SignupPage({ navigation }) {
                             </Animatable.View>
 
                     }
-                    <TextInput
-                        style={validemail == true ? styles.trueinput : styles.input}
-                        placeholder='Your email'
-                        onEndEditing={() => emailValidator()}
-                        keyboardType='email-address'
-                        autoCompleteType='email'
-                        placeholderTextColor='black'
-                        value={email}
-                        onChangeText={(text) => setemail(text)}
-                        autoCapitalize='none'>
-                    </TextInput>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Ionicons
+                            name='mail'
+                            size={30}
+                            color='paleturquoise'
+                            style={{ marginTop: 10, marginRight: 10 }}>
+                        </Ionicons>
+                        <TextInput
+                            style={validemail == true ? styles.trueinput : styles.input}
+                            placeholder='Your email'
+                            onEndEditing={() => emailValidator()}
+                            keyboardType='email-address'
+                            autoCompleteType='email'
+                            placeholderTextColor='black'
+                            value={email}
+                            onChangeText={(text) => setemail(text)}
+                            autoCapitalize='none'>
+                        </TextInput>
+                    </View>
                     {
                         validemail ? null :
                             <Animatable.View animation="fadeInLeft" duration={1000}>
@@ -164,18 +193,37 @@ function SignupPage({ navigation }) {
                                     {emailError}
                                 </Text>
                             </Animatable.View>
-
                     }
-                    <TextInput
-                        style={validpassword == true ? styles.trueinput : styles.input}
-                        placeholder='Your password'
-                        autoCompleteType='password'
-                        onEndEditing={() => passwordValidator()}
-                        placeholderTextColor='black'
-                        secureTextEntry={true}
-                        value={password}
-                        onChangeText={(text) => setpassword(text)}>
-                    </TextInput>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setisSecureEntry((prev) => !prev);
+                            }}>
+                            {
+                                isSecureEntry ? <Ionicons
+                                    name='eye-off'
+                                    size={30}
+                                    color='paleturquoise'
+                                    style={{ marginLeft: 10, marginTop: 10, marginRight: 10 }}>
+                                </Ionicons> : <Ionicons
+                                    name='eye'
+                                    size={30}
+                                    color='paleturquoise'
+                                    style={{ marginLeft: 10, marginTop: 10, marginRight: 10 }}>
+                                </Ionicons>
+                            }
+                        </TouchableOpacity>
+                        <TextInput
+                            style={validpassword == true ? styles.trueinput : styles.input}
+                            placeholder='Your password'
+                            autoCompleteType='password'
+                            onEndEditing={() => passwordValidator()}
+                            placeholderTextColor='black'
+                            secureTextEntry={isSecureEntry}
+                            value={password}
+                            onChangeText={(text) => setpassword(text)}>
+                        </TextInput>
+                    </View>
                     {
                         validpassword ? null :
                             <Animatable.View animation="fadeInLeft" duration={1000}>
@@ -190,11 +238,14 @@ function SignupPage({ navigation }) {
                             emailValidator();
                             passwordValidator();
                             fullNameValidator();
-                            (final_namecheck === true && final_emailcheck === true && final_passwordcheck === true) ?
-                                // (
-                                    // navigation.navigate('Profile', { text: email }),
-                                    register(email, password) : null
-                                // ) 
+                            if (final_namecheck === true && final_emailcheck === true && final_passwordcheck === true) {
+                                register(email, password);
+                                showToastWithGravityAndOffset();
+                            }
+                            else {
+                                return null;
+                            }
+
                         }}>
                         <Text style={{ ...styles.textStyle, fontSize: 30 }}>
                             Sign up
@@ -217,8 +268,8 @@ const styles = StyleSheet.create({
     },
     imagebackground: {
         marginLeft: 20,
-        height: hp('12%'),
-        width: wp('25%'),
+        height: hp('15%'),
+        width: wp('31%'),
     },
     textStyle: {
         fontFamily: 'SansitaSwashed-Regular',
@@ -227,26 +278,30 @@ const styles = StyleSheet.create({
         marginLeft: 8
     },
     input: {
+        fontSize: 16,
         color: 'black',
         backgroundColor: 'paleturquoise',
-        height: hp('5.5%'),
+        height: 48,
         width: wp('75%'),
         paddingLeft: 10,
-        marginBottom: 10,
+        marginBottom: 25,
         borderWidth: 0.5,
         borderColor: 'white',
         borderRadius: 25,
-        elevation: 6
+        elevation: 1,
+        marginRight: 15,
+        borderColor: 'black'
     },
     trueinput: {
+        fontSize: 16,
         color: 'black',
         backgroundColor: 'paleturquoise',
-        height: hp('5.5%'),
+        height: 48,
         width: wp('75%'),
         paddingLeft: 10,
         marginBottom: 40,
         borderWidth: 0.5,
-        borderColor: 'white',
+        borderColor: 'black',
         borderRadius: 25,
     }
 });

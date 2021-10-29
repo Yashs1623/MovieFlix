@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import {
     View,
-    TextInput,
     StyleSheet,
     StatusBar,
     ImageBackground,
     Text,
     TouchableOpacity,
     ScrollView,
-    FlatList
+    FlatList,
+    Alert
 } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { AirbnbRating } from 'react-native-ratings';
-
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 
 function hollywood_movie_details({ navigation, route }) {
+
     useEffect(async () => {
         await getVideos();
         await getgenres();
@@ -34,7 +36,7 @@ function hollywood_movie_details({ navigation, route }) {
     const [iscastsdataLoading, setcastsdataLoading] = useState(true);
     const [similar_moviesData, setsimilar_moviesData] = useState([]);
     const [issimilar_moviesdataLoading, setsimilar_moviesdataLoading] = useState(true);
-
+    const [isFavourite, setisFavourite] = useState(false);
 
     const movie_id = route.params.movie_id;
     const movie_title = route.params.movie_title;
@@ -45,6 +47,22 @@ function hollywood_movie_details({ navigation, route }) {
 
 
 
+    const addFavourite = async () => {
+        await ref.add({
+            email: auth().currentUser.email,
+            FavouriteMovieId: movie_id,
+            FavouriteMovieTitle: movie_title,
+            FavouriteMoviePosterPath: poster_path,
+            FavouriteMovieRating: vote_average,
+            FavouriteMovieReleaseDate: release_date,
+            FavouriteMovieDescription: movie_description
+        });
+    }
+
+    const ref = firestore().collection('Users');
+
+    // async function removeFavourite() {
+    // }
 
     const getVideos = async () => {
         try {
@@ -251,20 +269,43 @@ function hollywood_movie_details({ navigation, route }) {
 
                         </View>
                     </View>
-                    <View>
-                        <AirbnbRating
-                            count={5}
-                            reviewColor='white'
-                            reviewSize={22}
-                            reviews={["Meh", "Hmm...", "Good", "Very Good", "Amazing",]}
-                            defaultRating={vote_average}
-                            size={28}
-                            selectedColor='yellow'
-                            unSelectedColor='paleturquoise'
-                            isDisabled={true}
-                        />
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flex: 1, alignItems: 'center' }}>
+                            <AirbnbRating
+                                count={5}
+                                reviewColor='white'
+                                reviewSize={22}
+                                reviews={["Meh", "Hmm...", "Good", "Very Good", "Amazing",]}
+                                defaultRating={vote_average}
+                                size={28}
+                                selectedColor='#02006C'
+                                unSelectedColor='paleturquoise'
+                                isDisabled={true}
+                            />
+                        </View>
+                        <View style={{ justifyContent: 'flex-end', alignItems: 'center', flex: 1 }}>
+                            <TouchableOpacity onPress={() => {
+                                setisFavourite((prev) => !prev);
+                                addFavourite();
+                            }}>
+                                {
+                                    isFavourite ? <Ionicons
+                                        name='heart'
+                                        size={35}
+                                        color='#02006C'
+                                    >
+                                    </Ionicons> : <Ionicons
+                                        name='heart'
+                                        size={35}
+                                        color='paleturquoise'
+                                    >
+                                    </Ionicons>
+                                }
+                            </TouchableOpacity>
+                            <Text style={{ color: 'white', fontFamily: 'SansitaSwashed-Regular' }}>Add  to  Favourites</Text>
+                        </View>
                     </View>
-                    <Text style={{ ...styles.movie_title_textStyle, marginTop: 0 }}>
+                    <Text style={{ ...styles.movie_title_textStyle, marginTop: 20.0 }}>
                         Casts
                     </Text>
                     <View>

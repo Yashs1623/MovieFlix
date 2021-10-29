@@ -9,11 +9,11 @@ import TopTabs from './upcoming_movies_top_nav_screen/top_tab_navigator';
 
 const Tab = createMaterialBottomTabNavigator();
 
-function MyTabs({ route }) {
-    // const temp = route.params.text
+function MyTabs({route }) {
+    const email = route.params.text;
     return (
         <Tab.Navigator
-            initialRouteName='TopTabs'
+            initialRouteName='Profile'
             activeColor="white"
             barStyle={{ backgroundColor: '#33b3a6' }}
         >
@@ -40,7 +40,7 @@ function MyTabs({ route }) {
                     ),
 
                 }} />
-            <Tab.Screen name="Profile" component={Profile} //initialParams={{ text1: temp }}
+            <Tab.Screen name="Profile" component={Profile} initialParams={{ text: email }}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: () => (
