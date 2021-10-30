@@ -6,13 +6,14 @@ import {
     Text,
     FlatList,
     ImageBackground,
-    TouchableOpacity
+    TouchableOpacity,
+    ToastAndroid
 } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 function Favourites({ navigation }) {
@@ -33,43 +34,21 @@ function Favourites({ navigation }) {
         })
     }
 
-
+    const showToastWithGravityAndOffset = () => {
+        ToastAndroid.showWithGravityAndOffset(
+            "Not in your favorites anymore  :(",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            25,
+            hp('30%')
+        );
+        return null;
+    };
 
     const renderItem = ({ item }) => {
         return (
-            // <View style={{ alignItems: 'center', marginTop: 10 }}>
-            //     <View style={{ flexDirection: 'row', width: wp('95%'), backgroundColor: 'paleturquoise', elevation: 20 }}>
-            //         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            //             <ImageBackground
-            //                 source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.FavouriteMoviePosterPath }}
-            //                 style={styles.movie_poster}>
-            //             </ImageBackground>
-            //         </View>
-
-            //         <View style={{ flexDirection: "column" }}>
-            //             <View style={{ width: wp('70%') }}>
-            //                 <Text style={styles.movie_title_textStyle}>{item.FavouriteMovieTitle}</Text>
-            //             </View>
-            //             <View style={{ alignItems: 'flex-start', marginLeft: 18 }}>
-            //                 {
-            //                     item.FavouriteMovieRating == 0 ?
-            //                         <View>
-            //                             <Text style={{ color: 'black', fontSize: 16 }}>It's an upcoming movie</Text>
-            //                             <Text>Rd : {item.FavouriteMovieReleaseDate}</Text>
-            //                         </View> :
-            //                         <Text style={{ color: 'black', fontSize: 16 }}>
-            //                             Rating : {item.FavouriteMovieRating.toFixed(1)}/5
-            //                         </Text>
-            //                 }
-
-            //             </View>
-            //         </View>
-
-            //     </View>
-            // </View>
-
             <View style={{ backgroundColor: 'paleturquoise', elevation: 20, width: wp('41%'), height: 260, marginRight: 10, marginBottom: 20, marginLeft: 20 }}>
-                <TouchableOpacity  //navigation.navigate('movie_details')
+                <TouchableOpacity
                     onPress={() => {
                         navigation.navigate('hollywood_movie_details',
                             {
@@ -78,12 +57,28 @@ function Favourites({ navigation }) {
                                 release_date: item.FavouriteMovieReleaseDate,
                                 poster_path: item.FavouriteMoviePosterPath,
                                 movie_description: item.FavouriteMovieDescription,
-                                vote_average: item.FavouriteMovieRating,
+                                vote_average: item.FavouriteMovieRating * 2,
                             })
                     }}>
                     <ImageBackground
                         source={{ uri: 'https://image.tmdb.org/t/p/original/' + item.FavouriteMoviePosterPath }}
                         style={styles.movie_poster}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                var userRef = firestore().collection('Users').where('email', '==', auth().currentUser.email).where('FavouriteMovieTitle', '==', item.FavouriteMovieTitle);
+                                userRef.get().then(function (querySnapshot) {
+                                    querySnapshot.forEach(function (doc) {
+                                        doc.ref.delete();
+                                    });
+                                });
+                                showToastWithGravityAndOffset();
+                            }}>
+                            <Ionicons
+                                name='close-circle'
+                                size={30}
+                                color='white'
+                                style={{ marginLeft: wp('32%'), marginTop: 3 }}></Ionicons>
+                        </TouchableOpacity>
                     </ImageBackground>
                     <View style={{ width: wp('41%') }}>
                         <Text style={styles.movie_title_textStyle}>{item.FavouriteMovieTitle}</Text>
@@ -95,11 +90,11 @@ function Favourites({ navigation }) {
                                     <Text style={{ color: 'black', fontSize: 15 }}>Upcoming movie</Text>
                                     <Text style={{ color: 'black', fontSize: 15 }}>Rd: {item.FavouriteMovieReleaseDate}</Text>
                                 </View> :
-                                <View style={{flexDirection:'row'}}>
-                                    <Text style={{ color: 'black', fontSize: 16 , marginTop:5}}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ color: 'black', fontSize: 16, marginTop: 5 }}>
                                         Rating :{"  "}
                                     </Text>
-                                    <Text style={{fontSize: 16, color:'#000038' , marginTop:5}}>
+                                    <Text style={{ fontSize: 16, color: '#000038', marginTop: 5 }}>
                                         {item.FavouriteMovieRating.toFixed(1)}/5
                                     </Text>
                                 </View>

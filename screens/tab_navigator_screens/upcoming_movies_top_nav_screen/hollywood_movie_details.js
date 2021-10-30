@@ -278,7 +278,7 @@ function hollywood_movie_details({ navigation, route }) {
                                 reviews={["Meh", "Hmm...", "Good", "Very Good", "Amazing",]}
                                 defaultRating={vote_average}
                                 size={28}
-                                selectedColor='#02006C'
+                                selectedColor='#06737E'
                                 unSelectedColor='paleturquoise'
                                 isDisabled={true}
                             />
@@ -292,7 +292,7 @@ function hollywood_movie_details({ navigation, route }) {
                                     isFavourite ? <Ionicons
                                         name='heart'
                                         size={35}
-                                        color='#02006C'
+                                        color='#06737E'
                                     >
                                     </Ionicons> : <Ionicons
                                         name='heart'
